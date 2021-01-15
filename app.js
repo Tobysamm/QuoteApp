@@ -1,6 +1,6 @@
 const button = document.querySelector('button');
 const randomTexts = document.querySelector('.random-quotes');
-const authorBox = document.querySelector('.author');
+const authorBox = document.querySelector('.author a');
 
 function timeChange() {
     let d = new Date();
@@ -27,10 +27,16 @@ function generateQuote(e){
 }
     
 function showOutput(res){
-    let randomQuotes = `"${res.data[Math.floor(Math.random() * res.data.length)]['text']}"`;  
-    let quoteAuthors = `\`${res.data[Math.floor(Math.random() * res.data.length)]['author']}\``; 
+    const datas = res.data[Math.floor(Math.random() * res.data.length)];
+    let randomQuotes = `"${datas['text']}"`;  
+    let quoteAuthors = `\`${datas['author']}\``; 
     randomTexts.innerText = randomQuotes;
-    authorBox.innerText = quoteAuthors;
+    if(datas['author'] !== null){
+        authorBox.innerText = quoteAuthors;
+    }else {
+        authorBox.innerText = 'Regular';
+    }
+    authorBox.href = `https://www.wikipedia.org/wiki/${quoteAuthors.replace(/[`]/g, '')}`;
         randomTexts.className += ' fadeout';
         authorBox.className += ' fadeout';
         setTimeout(() => {
@@ -39,4 +45,4 @@ function showOutput(res){
         }, 4000)
 }
         
-button.addEventListener('click', generateQuote)
+button.addEventListener('click', generateQuote);
