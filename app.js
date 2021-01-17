@@ -1,6 +1,8 @@
 const button = document.querySelector('button');
 const randomTexts = document.querySelector('.random-quotes');
 const authorBox = document.querySelector('.author a');
+var audioElement = new Audio('audio/batchbug-sweet-dreams.mp3');
+
 
 function timeChange() {
     let d = new Date();
@@ -18,12 +20,12 @@ function timeChange() {
     }
 }
 timeChange();
-
 function generateQuote(e){
     axios
     .get('https://type.fit/api/quotes')
     .then(res => showOutput(res))
     .catch(err => console.error(err));
+    audioElement.play();
 }
     
 function showOutput(res){
@@ -44,5 +46,8 @@ function showOutput(res){
             authorBox.classList.remove('fadeout');
         }, 4000)
 }
-        
+audioElement.addEventListener('loadeddata', (e) => {
+    e.preventDefault()
+    audioElement.volume = 0.1;
+})        
 button.addEventListener('click', generateQuote);
